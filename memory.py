@@ -19,6 +19,9 @@ tiles = list(range(32)) * 2
 state = {'mark': None}
 hide = [True] * 64
 
+#Se inician contadores de clicks y parejas
+clicks= 0
+parejas=0
 
 def square(x, y):
     """Draw white square with black outline at (x, y)."""
@@ -46,9 +49,14 @@ def xy(count):
 
 
 def tap(x, y):
+    global clicks
+    global parejas
     """Update mark and hidden tiles based on tap."""
     spot = index(x, y)
     mark = state['mark']
+
+    # Cada que hay un tap es que hay un click mas
+    clicks+=1
 
     if mark is None or mark == spot or tiles[mark] != tiles[spot]:
         state['mark'] = spot
@@ -56,6 +64,9 @@ def tap(x, y):
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
+
+        # Se marca cuando se ha encontrado una pareja
+        parejas+=1
 
 
 def draw():
@@ -75,15 +86,27 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
+
         #Posicionamos las fichas dentro del cuadrado
         goto(x + 26, y+4)
         color('#473543')
         #Alineamos las fichas con ayuda de align="center"
         write(tiles[mark],align="center",font=('Arial', 30, 'normal'))
     
+    # Se van desplegando la cantidad de clicks
+    goto(0,210)
+    write (clicks,font=("Arial",20))
+
+    # Si se encuentran todas las parejas te dice que lo has logrado
+    if parejas == 32: 
+        up()
+        goto(0, 0)
+        color('#f0cc35')
+        write("YA SE LOGRÓ!!",  align="center", font=("Arial", 40, "bold")) 
 
     update()
     ontimer(draw, 100)
+
 
 
 shuffle(tiles)
