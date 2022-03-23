@@ -25,7 +25,9 @@ def square(x, y):
     up()
     goto(x, y)
     down()
-    color('black', 'white')
+    #Se cambio el color de tablero para que sea mas facil para el usuario ver las fichas
+    #Se cambio a una paleta de colores que ayuda a la memoria de las personas incluyendo los colores de las fichas
+    color('#f6caec', '#fffb9c')
     begin_fill()
     for count in range(4):
         forward(50)
@@ -73,9 +75,12 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
-        goto(x + 2, y)
-        color('black')
-        write(tiles[mark], font=('Arial', 30, 'normal'))
+        #Posicionamos las fichas dentro del cuadrado
+        goto(x + 26, y+4)
+        color('#473543')
+        #Alineamos las fichas con ayuda de align="center"
+        write(tiles[mark],align="center",font=('Arial', 30, 'normal'))
+    
 
     update()
     ontimer(draw, 100)
